@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     -- =====================================================================
     -- 1. 系统溯源与底层标识域 (System & Lineage)
     -- =====================================================================
-    -- data_source            STRING       COMMENT '数据来源渠道标识(如: tmall, jd)',
     date_id                 STRING       COMMENT '业务日期',
     channel                 STRING       COMMENT '原表一级触点/数据来源渠道',
     mapping_channel         STRING       COMMENT 'Mapping表触点|二级触点(京东特有)',

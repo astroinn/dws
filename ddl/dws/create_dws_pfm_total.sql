@@ -3,10 +3,12 @@ DROP TABLE IF EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total;
 CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
 (
     -- =====================================================================
-    -- 1. 
+    -- 1. 系统溯源与底层标识域 (System & Lineage)
     -- =====================================================================
     data_source            STRING       COMMENT '数据来源渠道标识(如: tmall, jd)',
+    source_id               STRING       COMMENT '数据源id(拼多多)',
     date_id                 STRING       COMMENT '业务日期',
+    month                   STRING       COMMENT '月份(拼多多)',
     channel                 STRING       COMMENT '原表一级触点/数据来源渠道',
     mapping_channel         STRING       COMMENT 'Mapping表触点|二级触点(京东特有)',
 
@@ -19,6 +21,7 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     ea_name                 STRING       COMMENT '企业账户名称',
     shop_id                 STRING       COMMENT '店铺ID',
     shop_name               STRING       COMMENT '店铺名称',
+    site_name               STRING       COMMENT '站点名称(拼多多)',
     account_id              STRING       COMMENT '账户id(京东)',
     account_name            STRING       COMMENT '账户名称(京东)',
     oss_key                 STRING       COMMENT '投放账户id(京东)',
@@ -28,11 +31,13 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     channel_name            STRING       COMMENT '一级渠道名称',
     plan_id                 STRING       COMMENT '计划ID',
     plan_name               STRING       COMMENT '计划名称',
+    plan_page_name          STRING       COMMENT '投放页面名称(拼多多)',
     scene_id                STRING       COMMENT '场景ID(天猫)',
     scene_name              STRING       COMMENT '场景名称(天猫)',
     scene_id_oldlv2         STRING       COMMENT '历史二级场景ID(天猫)',
     scene_name_oldlv2       STRING       COMMENT '历史二级场景名称(天猫)',
     dim_name                STRING       COMMENT '维度名称',
+    group_name              STRING       COMMENT '分组(拼多多)',
     
     creative_id             STRING       COMMENT '创意ID',
     creative_name           STRING       COMMENT '创意名称',
@@ -55,6 +60,8 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     bu                      STRING       COMMENT 'BU',    
     category                STRING       COMMENT '品类',
     old_category            STRING       COMMENT '旧品类(京东)',
+    sub_category            STRING       COMMENT '子分类(拼多多)',
+    tier                    STRING       COMMENT '层级(拼多多)',
     brand                   STRING       COMMENT '品牌',
     product_line            STRING       COMMENT '产品线/系列',
     sku_id                  STRING       COMMENT 'SKU ID',
@@ -70,12 +77,15 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     dir_type                STRING       COMMENT '定向方式(京东)',
     promote_device          STRING       COMMENT '推广设备类型(京东)',
     fee_type                STRING       COMMENT '费用类型(京东)',
+    spending_type           STRING       COMMENT '支出类型(拼多多)',
+    bidding_method          STRING       COMMENT '出价方式(拼多多)',
     trans_cycle             STRING       COMMENT '转化周期',
     crt_or_pay              STRING       COMMENT '下单订单/成交订单(京东)',
     in_no_zp                STRING       COMMENT '含赠品/不含赠品(京东)',
     day_report              STRING       COMMENT '分日报告(京东)',
     clk_or_crt              STRING       COMMENT '点击/下单口径(京东)',
     push_type               STRING       COMMENT '投放类型(京东)',
+    is_delete               STRING       COMMENT '是否已删除(拼多多)',
 
     -- =====================================================================
     -- 3. 过程流量与互动指标 (Traffic & Interaction)
@@ -83,6 +93,7 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     impression_cnt          STRING       COMMENT '展现量(京东impress_cnt合入)',
     click_cnt               STRING       COMMENT '点击量(京东clk_cnt合入)',
     click_rate              STRING       COMMENT '点击率(京东clk_rate合入)',
+    click_buy_rate          STRING       COMMENT '点击购买率(拼多多)',
     avg_display_rank        STRING       COMMENT '平均展现排名(天猫)',
     clk_uv                  STRING       COMMENT '点击访客数',
     touch_uv                STRING       COMMENT '触达访客数',
@@ -124,6 +135,7 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     ww_cslt_vlm             STRING       COMMENT '旺旺咨询量',
     reserve_cnt             STRING       COMMENT '预约数(京东)',
     get_ticket_cnt          STRING       COMMENT '领券数(京东)',
+    inquiry_count           STRING       COMMENT '询单量(拼多多)',
     
     live_pv                 STRING       COMMENT '直播观看量',
     live_like_pv            STRING       COMMENT '直播点赞量',
@@ -201,6 +213,14 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     all_pay_ord_amt         STRING       COMMENT '总支付/下单金额',
     dir_pay_ord_amt         STRING       COMMENT '直接支付金额',
     indir_pay_ord_amt       STRING       COMMENT '间接支付金额',
+    per_direct_transaction_amount   STRING       COMMENT '每笔直接成交金额(拼多多)',
+    per_indirect_transaction_amount STRING       COMMENT '每笔间接成交金额(拼多多)',
+    per_transaction_spending        STRING       COMMENT '每笔成交花费(拼多多)',
+    per_transaction_amount          STRING       COMMENT '每笔成交金额(拼多多)',
+    net_transaction_amount          STRING       COMMENT '净交易额(拼多多)',
+    net_transaction_count           STRING       COMMENT '净成交笔数(拼多多)',
+    per_net_transaction_spending    STRING       COMMENT '每笔净成交花费(拼多多)',
+    net_transaction_ratio           STRING       COMMENT '净交易额占比(拼多多)',
     all_pre_ord_amt         STRING       COMMENT '总预售订单金额(京东pre_pay_ord_amt合入)',
     dir_pre_ord_amt         STRING       COMMENT '直接预售订单金额',
     indir_pre_ord_amt       STRING       COMMENT '间接预售订单金额',
@@ -246,6 +266,8 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     -- =====================================================================
     cost                    STRING       COMMENT '花费/消耗',
     roi                     STRING       COMMENT '投入产出比',
+    net_actual_roi          STRING       COMMENT '净实际投产比(拼多多)',
+    total_site_promotion_ratio STRING    COMMENT '全站推广费比(拼多多)',
     dir_pay_ord_roi         STRING       COMMENT '直接支付roi',
     newer_roi               STRING       COMMENT '新客投入产出比',
     return_rate             STRING       COMMENT '回报率',
@@ -280,6 +302,12 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     new_customer_cost       STRING       COMMENT '新客成本(京东)',
     zc_pay_ord_cost         STRING       COMMENT '种草引导成交成本',
     zc_crowd_retarget_cost  STRING       COMMENT '种草人群追投消耗',
+    favorites_spending      STRING       COMMENT '收藏花费(拼多多)',
+    avg_favorites_spending  STRING       COMMENT '平均收藏成本(拼多多)',
+    focus_spending          STRING       COMMENT '关注花费(拼多多)',
+    avg_focus_spending      STRING       COMMENT '平均关注成本(拼多多)',
+    inquiry_spending        STRING       COMMENT '询单花费(拼多多)',
+    avg_inquiry_spending    STRING       COMMENT '平均询单成本(拼多多)',
     
     -- =====================================================================
     -- 8. 渠道特有业务扩展域 (Exclusive Ext)

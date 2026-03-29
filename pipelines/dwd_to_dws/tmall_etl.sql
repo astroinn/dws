@@ -1,358 +1,367 @@
 INSERT INTO ${spark.var.catalog.dws}.ddm.dws_pfm_total
 (
-    data_source,
-    date_id,
-    channel,
-    platform_id,
-    platform_name,
-    ea_id,
-    ea_name,
-    shop_id,
-    shop_name,
-    channel_id,
-    channel_name,
-    plan_id,
-    plan_name,
-    scene_id,
-    scene_name,
-    scene_id_oldlv2,
-    scene_name_oldlv2,
-    dim_name,
-    creative_id,
-    creative_name,
-    main_id,
-    main_name,
-    main_type,
-    bu,
-    category,
-    brand,
-    product_line,
-    sku_id,
-    sku_name,
-    is_npd,
-    crowd_name,
-    attribution_model,
-    unify_type,
-    trans_cycle,
-    impression_cnt,
-    click_cnt,
-    click_rate,
-    avg_display_rank,
-    clk_uv,
-    touch_uv,
-    vst_pv,
-    vst_rate,
-    avg_vst_interval,
-    avg_vst_page_cnt,
-    depth_vst_pv,
-    stay_time_len,
-    valid_vst_pv,
-    valid_vst_rate,
-    avg_valid_vst_interval,
-    inav_pv,
-    inav_rate,
-    clk_inav_pv,
-    clk_jump_pv,
-    clk_jump_rate,
-    act_uv,
-    enterslr_pv,
-    enterslr_rate,
-    enterslr_uv,
-    search_pv,
-    search_uv,
-    research_impress_cnt,
-    research_clk_pv,
-    research_clk_uv,
-    research_touch_uv,
-    clk_module_cnt,
-    ww_cslt_vlm,
-    live_pv,
-    live_like_pv,
-    live_share_pv,
-    live_cmt_cnt,
-    gd2live_total_vst_pv,
-    vdo2live_trans_ratio,
-    gd_vst_pv,
-    gd_vst_uv,
-    gd_vst_rate,
-    gd_ptnler_vst_uv,
-    gd_ptnler_vst_rate,
-    natural_flow_trans_exp,
-    all_cart_itm_cnt,
-    dir_cart_itm_cnt,
-    indir_cart_itm_cnt,
-    cart_itm_cnt,
-    cart_itm_uv,
-    cart_rate,
-    all_clt_itm_cnt,
-    dir_clt_itm_cnt,
-    indir_clt_itm_cnt,
-    clt_itm_cnt,
-    clt_slr_cnt,
-    clt_itm_uv,
-    clt_slr_uv,
-    flr_uv,
-    flw_uv,
-    clt_itm_rate,
-    all_clt_cart_itm_cnt,
-    clt_cart_itm_cnt,
-    clt_cart_itm_rate,
-    trans_rate,
-    clk_trans_rate,
-    pay_trans_rate,
-    se2enterslr_trans_rate,
-    enterslr2act_trans_rate,
-    act2pay_trans_rate,
-    trans_effect,
-    crt_ord_cnt,
-    all_pay_ord_cnt,
-    dir_pay_ord_cnt,
-    indir_pay_ord_cnt,
-    all_pre_ord_cnt,
-    dir_pre_ord_cnt,
-    indir_pre_ord_cnt,
-    ord_plc_amt,
-    all_pay_ord_amt,
-    dir_pay_ord_amt,
-    indir_pay_ord_amt,
-    all_pre_ord_amt,
-    dir_pre_ord_amt,
-    indir_pre_ord_amt,
-    natural_flow_trans_pay,
-    avg_pay_ord_cnt,
-    avg_pay_ord_amt,
-    pay_byr_cnt,
-    rc_gwj_cnt,
-    rc_gwj_amt,
-    coupon_rdmpt_cnt,
-    pay_new_user_cnt,
-    pay_new_user_rate,
-    touch_newer_cnt,
-    vst_newer_pv,
-    newer_cover_rate,
-    newer_pay_trans_rate,
-    enterslr_newer_uv,
-    inav_newer_uv,
-    ntl_trf_exp,
-    ntl_trf_cvr_amt,
-    dir_pay_ord_amt_ratio,
-    dir_pre_ord_amt_ratio,
-    mbr_cnt,
-    mbr_rate,
-    mbr_uv,
-    mbr_first_purchase_cnt,
-    mbr_pay_ord_cnt,
-    mbr_pay_ord_amt,
-    zc_crowd_retarget_gd_pay_amt,
-    cost,
-    roi,
-    dir_pay_ord_roi,
-    newer_roi,
-    return_rate,
-    zc_pay_roi,
-    zc_crowd_retarget_roi,
-    impress_cpm,
-    cost_per_tosd_impres,
-    avg_clk_cost,
-    avg_cost_per_clk,
-    clk_unit_amt,
-    jump2clk_unit_amt,
-    vst_cost,
-    valid_vst_cpm,
-    itm_fvt_cost,
-    clt_itm_cost,
-    clt_slr_cost,
-    cart_itm_cost,
-    clt_cart_itm_cost,
-    all_clt_cart_itm_cost,
-    shop_clt_cost,
-    all_pay_ord_cost,
-    laxin_cost,
-    inc_fans_cost,
-    touch_newer_cost,
-    zc_pay_ord_cost,
-    zc_crowd_retarget_cost,
-    uuid,
-    file_id,
-    file_name,
-    stat_date
+    data_source,                  -- 01. 数据来源渠道标识(如: tmall, jd)
+    date_id,                      -- 02. 业务日期
+    channel,                      -- 03. 原表一级触点/数据来源渠道
+    platform_id,                  -- 04. 平台ID/渠道平台id
+    platform_name,                -- 05. 平台名称
+    ea_id,                        -- 06. 企业账户ID
+    ea_name,                      -- 07. 企业账户名称
+    shop_id,                      -- 08. 店铺ID
+    shop_name,                    -- 09. 店铺名称
+    channel_id,                   -- 10. 一级渠道ID
+    channel_name,                 -- 11. 一级渠道名称
+    plan_id,                      -- 12. 计划ID
+    plan_name,                    -- 13. 计划名称
+    scene_id,                     -- 14. 场景ID(天猫)
+    scene_name,                   -- 15. 场景名称(天猫)
+    scene_id_oldlv2,              -- 16. 历史二级场景ID(天猫)
+    scene_name_oldlv2,            -- 17. 历史二级场景名称(天猫)
+    dim_name,                     -- 18. 维度名称
+    creative_id,                  -- 19. 创意ID
+    creative_name,                -- 20. 创意名称
+    main_id,                      -- 21. 主体ID|词包ID(天猫)
+    main_name,                    -- 22. 主体名称|词包名称(天猫)
+    main_type,                    -- 23. 主体类型|商品类型(天猫)
+    bu,                           -- 24. BU
+    category,                     -- 25. 品类
+    brand,                        -- 26. 品牌
+    product_line,                 -- 27. 产品线/系列
+    sku_id,                       -- 28. SKU ID
+    sku_name,                     -- 29. SKU名称(京东sku_name对齐天猫sku)
+    is_npd,                       -- 30. 是否新品
+    crowd_name,                   -- 31. 人群名称(天猫)
+    attribution_model,            -- 32. 归因模型(天猫)
+    unify_type,                   -- 33. 归因口径(天猫)
+    trans_cycle,                  -- 34. 转化周期
+    impression_cnt,               -- 35. 展现量(京东impress_cnt合入)
+    click_cnt,                    -- 36. 点击量(京东clk_cnt合入)
+    click_rate,                   -- 37. 点击率(京东clk_rate合入)
+    avg_display_rank,             -- 38. 平均展现排名(天猫)
+    clk_uv,                       -- 39. 点击访客数
+    touch_uv,                     -- 40. 触达访客数
+    vst_itm_cnt ,           --'宝贝浏览数 #67',
+    vst_slr_cnt,             -- '店铺浏览数 #68',
+    vst_itm_uv   ,           --'宝贝浏览访客数 #69',
+    vst_pv,                       -- 41. 观看次数/访问页面数(京东stay_page_cnt合入)
+    vst_rate,                     -- 42. 观看率
+    avg_vst_interval,             -- 43. 平均观看时长(京东avg_stay_time_len合入)
+    avg_vst_page_cnt,             -- 44. 平均访问页面数
+    depth_vst_pv,                 -- 45. 深度访问量
+    stay_time_len,                -- 46. 访问时长总计(天猫)
+    valid_vst_pv,                 -- 47. 有效观看量
+    valid_vst_rate,               -- 48. 有效观看率
+    avg_valid_vst_interval,       -- 49. 平均有效观看时长
+    cmt_pv,                             --'评论量',
+    like_pv,                         -- '点赞量',
+    share_pv,                      --'转发量',
+    inav_pv,                      -- 50. 互动量
+    inav_rate,                    -- 51. 互动率
+    clk_inav_pv,                  -- 52. 互动点击量
+    clk_jump_pv,                  -- 53. 跳转点击量
+    clk_jump_rate,                -- 54. 跳转点击率
+    act_uv,                       -- 55. 行动访客数
+    enterslr_pv,                  -- 56. 进店量
+    enterslr_rate,                -- 57. 进店率
+    enterslr_uv,                  -- 58. 进店访客数
+    search_pv,                    -- 59. 搜索访客量
+    search_uv,                    -- 60. 搜索访客数
+    research_impress_cnt,         -- 61. 回搜展现量
+    research_clk_pv,              -- 62. 回搜点击量
+    research_clk_uv,              -- 63. 回搜点击访客数
+    research_touch_uv,            -- 64. 回搜触达访客数
+    clk_module_cnt,               -- 65. 组件点击数
+    ww_cslt_vlm,                  -- 66. 旺旺咨询量
+    live_pv,                      -- 67. 直播观看量
+    live_like_pv,                 -- 68. 直播点赞量
+    live_share_pv,                -- 69. 直播分享量
+    live_cmt_cnt,                 -- 70. 直播评论量
+    gd2live_total_vst_pv,         -- 71. 引流直播间总观看次数
+    vdo2live_trans_ratio,         -- 72. 视频引流直播观看占比
+    gd_vst_pv,                    -- 73. 引导平台访问pv
+    gd_vst_uv,                    -- 74. 引导平台访问uv
+    gd_vst_rate,                  -- 75. 引导平台访问率
+    gd_ptnler_vst_uv,             -- 76. 平台访问潜客数
+    gd_ptnler_vst_rate,           -- 77. 平台访问潜客占比
+    natural_flow_trans_exp,       -- 78. 自然流量增量曝光
+    all_cart_itm_cnt,             -- 79. 总加购数(京东all_cart_cnt合入)
+    dir_cart_itm_cnt,             -- 80. 直接加购数(京东dir_cart_cnt合入)
+    indir_cart_itm_cnt,           -- 81. 间接加购数(京东indir_cart_cnt合入)
+    cart_itm_cnt,                 -- 82. 宝贝/商品加购数
+    cart_itm_uv,                  -- 83. 宝贝加购访客数
+    cart_rate,                    -- 84. 加购率
+    all_clt_itm_cnt,              -- 85. 总收藏/关注数
+    dir_clt_itm_cnt,              -- 86. 直接收藏宝贝数
+    indir_clt_itm_cnt,            -- 87. 间接收藏宝贝数
+    clt_itm_cnt,                  -- 88. 宝贝收藏数(京东flw_itm_cnt合入)
+    clt_slr_cnt,                  -- 89. 店铺收藏数(京东flw_slr_cnt合入)
+    clt_itm_uv,                   -- 90. 宝贝收藏访客数
+    clt_slr_uv,                   -- 91. 店铺收藏访客数
+    flr_uv,                       -- 92. 关注访客数(天猫)
+    flw_uv,                       -- 93. 粉丝关注量(天猫)
+    clt_itm_rate,                 -- 94. 宝贝收藏率
+    all_clt_cart_itm_cnt,         -- 95. 总收藏加购数
+    clt_cart_itm_cnt,             -- 96. 宝贝收藏加购数
+    clt_cart_itm_rate,            -- 97. 宝贝收藏加购率
+    trans_rate,                   -- 98. 转化率
+    clk_trans_rate,               -- 99. 点击转化率
+    pay_trans_rate,               -- 100. 成交转化率
+    se2enterslr_trans_rate,       -- 101. 搜索进店率
+    enterslr2act_trans_rate,      -- 102. 进店行动率
+    act2pay_trans_rate,           -- 103. 行动成交率
+    trans_effect,                 -- 104. 转化效果
+    crt_ord_cnt,                  -- 105. 拍下订单笔数
+    all_pay_ord_cnt,              -- 106. 总支付订单/总订单行
+    dir_pay_ord_cnt,              -- 107. 直接支付订单笔数/行
+    indir_pay_ord_cnt,            -- 108. 间接支付订单笔数/行
+    all_pre_ord_cnt,              -- 109. 总预售成交笔数(京东pre_pay_ord_cnt合入)
+    dir_pre_ord_cnt,              -- 110. 直接预售成交笔数
+    indir_pre_ord_cnt,            -- 111. 间接预售成交笔数
+    ord_plc_amt,                  -- 112. 拍下订单金额
+    all_pay_ord_amt,              -- 113. 总支付/下单金额
+    dir_pay_ord_amt,              -- 114. 直接支付金额
+    indir_pay_ord_amt,            -- 115. 间接支付金额
+    all_pre_ord_amt,              -- 116. 总预售订单金额(京东pre_pay_ord_amt合入)
+    dir_pre_ord_amt,              -- 117. 直接预售订单金额
+    indir_pre_ord_amt,            -- 118. 间接预售订单金额
+    natural_flow_trans_pay,       -- 119. 自然流量增量成交
+    avg_pay_ord_cnt,              -- 120. 人均成交笔数
+    avg_pay_ord_amt,              -- 121. 人均成交金额
+    pay_byr_cnt,                  -- 122. 成交人数/买家数
+    rc_gwj_cnt,                   -- 123. 购物金充值笔数
+    rc_gwj_amt,                   -- 124. 购物金充值金额
+    coupon_rdmpt_cnt,             -- 125. 优惠券领取量
+    pay_new_user_cnt,             -- 126. 新用户支付笔数(京东pay_newer_cnt合入)
+    pay_new_user_rate,            -- 127. 新用户支付转化率
+    touch_newer_cnt,              -- 128. 新客触达数
+    vst_newer_pv,                 -- 129. 新客观看次数
+    newer_cover_rate,             -- 130. 新客覆盖率
+    newer_pay_trans_rate,         -- 131. 新客成交转化率
+    enterslr_newer_uv,            -- 132. 进店新客人数
+    inav_newer_uv,                -- 133. 互动新客人数
+    ntl_trf_exp,                  -- 134. 新流量曝光
+    ntl_trf_cvr_amt,              -- 135. 新流量转化金额
+    dir_pay_ord_amt_ratio,        -- 136. 新客直接引导成交金额占比
+    dir_pre_ord_amt_ratio,        -- 137. 新客直接引导预售成交金额占比
+    mbr_cnt,                      -- 138. 会员数
+    mbr_rate,                     -- 139. 会员转化率
+    mbr_uv,                       -- 140. 入会量
+    mbr_first_purchase_cnt,       -- 141. 会员首购人数
+    mbr_pay_ord_cnt,              -- 142. 会员成交笔数
+    mbr_pay_ord_amt,              -- 143. 会员成交金额
+    zc_crowd_retarget_gd_pay_amt, -- 144. 种草人群追投引导成交金额
+    cost,                         -- 145. 花费/消耗
+    roi,                          -- 146. 投入产出比
+    dir_pay_ord_roi,              -- 147. 直接支付roi
+    newer_roi,                    -- 148. 新客投入产出比
+    return_rate,                  -- 149. 回报率
+    zc_pay_roi,                   -- 150. 种草引导成交ROI
+    zc_crowd_retarget_roi,        -- 151. 种草人群追投roi
+    impress_cpm,                  -- 152. 千次展现花费/成本
+    cost_per_tosd_impres,         -- 153. 每次展示成本
+    avg_clk_cost,                 -- 154. 平均点击花费/成本
+    avg_cost_per_clk,             -- 155. 平均点击成本(天猫专用)
+    clk_unit_amt,                 -- 156. 点击单价
+    jump2clk_unit_amt,            -- 157. 跳转点击单价
+    vst_cost,                     -- 158. 观看成本
+    valid_vst_cpm,                -- 159. 千次有效观看成本
+    itm_fvt_cost,                 -- 160. 商品收藏成本
+    clt_itm_cost,                 -- 161. 宝贝收藏成本
+    clt_slr_cost,                 -- 162. 店铺收藏成本
+    cart_itm_cost,                -- 163. 加购商品成本
+    clt_cart_itm_cost,            -- 164. 宝贝收藏加购成本
+    all_clt_cart_itm_cost,        -- 165. 总收藏加购成本
+    shop_clt_cost,                -- 166. 店铺客户成本
+    all_pay_ord_cost,             -- 167. 总成交成本(京东cpa合入)
+    laxin_cost,                   -- 168. 拉新成本
+    inc_fans_cost,                -- 169. 新增粉丝成本
+    touch_newer_cost,             -- 170. 新客触达成本
+    zc_pay_ord_cost,              -- 171. 种草引导成交成本
+    zc_crowd_retarget_cost,       -- 172. 种草人群追投消耗
+    uuid,                         -- 173. 唯一ID/行标识(京东ly_uuid对齐至此)
+    file_id,                      -- 174. 来源文件ID/系统唯一标识
+    file_name                     -- 175. 来源文件名
 )
 SELECT 
-    'tmall' AS data_source,
-    date_id,
-    channel,
-    platform_id,
-    platform_name,
-    ea_id,
-    ea_name,
-    shop_id,
-    shop_name,
-    channel_id,
-    channel_name,
-    plan_id,
-    plan_name,
-    scene_id,
-    scene_name,
-    scene_id_oldlv2,
-    scene_name_oldlv2,
-    dim_name,
-    creative_id,
-    creative_name,
-    main_id,
-    main_name,
-    main_type,
-    bu,
-    category,
-    brand,
-    product_line,
-    sku_id,
-    sku AS sku_name,
-    is_npd,
-    crowd_name,
-    attribution_model,
-    unify_type,
-    trans_cycle,
-    impression_cnt,
-    click_cnt,
-    click_rate,
-    avg_display_rank,
-    clk_uv,
-    touch_uv,
-    vst_pv,
-    vst_rate,
-    avg_vst_interval,
-    avg_vst_page_cnt,
-    depth_vst_pv,
-    stay_time_len,
-    valid_vst_pv,
-    valid_vst_rate,
-    avg_valid_vst_interval,
-    inav_pv,
-    inav_rate,
-    clk_inav_pv,
-    clk_jump_pv,
-    clk_jump_rate,
-    act_uv,
-    enterslr_pv,
-    enterslr_rate,
-    enterslr_uv,
-    search_pv,
-    search_uv,
-    research_impress_cnt,
-    research_clk_pv,
-    research_clk_uv,
-    research_touch_uv,
-    clk_module_cnt,
-    ww_cslt_vlm,
-    live_pv,
-    live_like_pv,
-    live_share_pv,
-    live_cmt_cnt,
-    gd2live_total_vst_pv,
-    vdo2live_trans_ratio,
-    gd_vst_pv,
-    gd_vst_uv,
-    gd_vst_rate,
-    gd_ptnler_vst_uv,
-    gd_ptnler_vst_rate,
-    natural_flow_trans_exp,
-    all_cart_itm_cnt,
-    dir_cart_itm_cnt,
-    indir_cart_itm_cnt,
-    cart_itm_cnt,
-    cart_itm_uv,
-    cart_rate,
-    all_clt_itm_cnt,
-    dir_clt_itm_cnt,
-    indir_clt_itm_cnt,
-    clt_itm_cnt,
-    clt_slr_cnt,
-    clt_itm_uv,
-    clt_slr_uv,
-    flr_uv,
-    flw_uv,
-    clt_itm_rate,
-    all_clt_cart_itm_cnt,
-    clt_cart_itm_cnt,
-    clt_cart_itm_rate,
-    trans_rate,
-    clk_trans_rate,
-    pay_trans_rate,
-    se2enterslr_trans_rate,
-    enterslr2act_trans_rate,
-    act2pay_trans_rate,
-    trans_effect,
-    crt_ord_cnt,
-    all_pay_ord_cnt,
-    dir_pay_ord_cnt,
-    indir_pay_ord_cnt,
-    all_pre_ord_cnt,
-    dir_pre_ord_cnt,
-    indir_pre_ord_cnt,
-    ord_plc_amt,
-    all_pay_ord_amt,
-    dir_pay_ord_amt,
-    indir_pay_ord_amt,
-    all_pre_ord_amt,
-    dir_pre_ord_amt,
-    indir_pre_ord_amt,
-    natural_flow_trans_pay,
-    avg_pay_ord_cnt,
-    avg_pay_ord_amt,
-    pay_byr_cnt,
-    rc_gwj_cnt,
-    rc_gwj_amt,
-    coupon_rdmpt_cnt,
-    pay_new_user_cnt,
-    pay_new_user_rate,
-    touch_newer_cnt,
-    vst_newer_pv,
-    newer_cover_rate,
-    newer_pay_trans_rate,
-    enterslr_newer_uv,
-    inav_newer_uv,
-    ntl_trf_exp,
-    ntl_trf_cvr_amt,
-    dir_pay_ord_amt_ratio,
-    dir_pre_ord_amt_ratio,
-    mbr_cnt,
-    mbr_rate,
-    mbr_uv,
-    mbr_first_purchase_cnt,
-    mbr_pay_ord_cnt,
-    mbr_pay_ord_amt,
-    zc_crowd_retarget_gd_pay_amt,
-    cost,
-    roi,
-    dir_pay_ord_roi,
-    newer_roi,
-    return_rate,
-    zc_pay_roi,
-    zc_crowd_retarget_roi,
-    impress_cpm,
-    cost_per_tosd_impres,
-    avg_clk_cost,
-    avg_cost_per_clk,
-    clk_unit_amt,
-    jump2clk_unit_amt,
-    vst_cost,
-    valid_vst_cpm,
-    itm_fvt_cost,
-    clt_itm_cost,
-    clt_slr_cost,
-    cart_itm_cost,
-    clt_cart_itm_cost,
-    all_clt_cart_itm_cost,
-    shop_clt_cost,
-    all_pay_ord_cost,
-    laxin_cost,
-    inc_fans_cost,
-    touch_newer_cost,
-    zc_pay_ord_cost,
-    zc_crowd_retarget_cost,
-    uuid,
-    file_id,
-    file_name,
-    stat_date
-FROM ${spark.var.catalog.dwd}.ddm.dwd_tmall_pfm_sku
-WHERE stat_date = '${spark.var.stat_date}';
+    '天猫' AS data_source,       -- 01. 数据来源渠道标识(如: tmall, jd)
+    date_format(stat_date) as date_id,                      -- 02. 业务日期
+    channel,                      -- 03. 原表一级触点/数据来源渠道
+    platform_id,                  -- 04. 平台ID/渠道平台id
+    platform_name,                -- 05. 平台名称
+    ea_id,                        -- 06. 企业账户ID
+    ea_name,                      -- 07. 企业账户名称
+    shop_id,                      -- 08. 店铺ID
+    shop_name,                    -- 09. 店铺名称
+    channel_id,                   -- 10. 一级渠道ID
+    channel_name,                 -- 11. 一级渠道名称
+    plan_id,                      -- 12. 计划ID
+    plan_name,                    -- 13. 计划名称
+    scene_id,                     -- 14. 场景ID(天猫)
+    scene_name,                   -- 15. 场景名称(天猫)
+    scene_id_oldlv2,              -- 16. 历史二级场景ID(天猫)
+    scene_name_oldlv2,            -- 17. 历史二级场景名称(天猫)
+    dim_name,                     -- 18. 维度名称
+    creative_id,                  -- 19. 创意ID
+    creative_name,                -- 20. 创意名称
+    main_id,                      -- 21. 主体ID|词包ID(天猫)
+    main_name,                    -- 22. 主体名称|词包名称(天猫)
+    main_type,                    -- 23. 主体类型|商品类型(天猫)
+    bu,                           -- 24. BU
+    category,                     -- 25. 品类
+    brand,                        -- 26. 品牌
+    product_line,                 -- 27. 产品线/系列
+    sku_id,                       -- 28. SKU ID
+    sku AS sku_name,              -- 29. SKU名称(京东sku_name对齐天猫sku)
+    is_npd,                       -- 30. 是否新品
+    crowd_name,                   -- 31. 人群名称(天猫)
+    attribution_model,            -- 32. 归因模型(天猫)
+    unify_type,                   -- 33. 归因口径(天猫)
+    trans_cycle,                  -- 34. 转化周期
+    impression_cnt,               -- 35. 展现量(京东impress_cnt合入)
+    click_cnt,                    -- 36. 点击量(京东clk_cnt合入)
+    click_rate,                   -- 37. 点击率(京东clk_rate合入)
+    avg_display_rank,             -- 38. 平均展现排名(天猫)
+    clk_uv,                       -- 39. 点击访客数
+    touch_uv,                     -- 40. 触达访客数
+        vst_itm_cnt ,           --'宝贝浏览数 #67',
+    vst_slr_cnt,             -- '店铺浏览数 #68',
+    vst_itm_uv   ,           --'宝贝浏览访客数 #69',
+    vst_pv,                       -- 41. 观看次数/访问页面数(京东stay_page_cnt合入)
+    vst_rate,                     -- 42. 观看率
+    avg_vst_interval,             -- 43. 平均观看时长(京东avg_stay_time_len合入)
+    avg_vst_page_cnt,             -- 44. 平均访问页面数
+    depth_vst_pv,                 -- 45. 深度访问量
+    stay_time_len,                -- 46. 访问时长总计(天猫)
+    valid_vst_pv,                 -- 47. 有效观看量
+    valid_vst_rate,               -- 48. 有效观看率
+    avg_valid_vst_interval,       -- 49. 平均有效观看时长
+    cmt_pv,                             --'评论量',
+    like_pv,                         -- '点赞量',
+    share_pv,                      --'转发量',
+    inav_pv,                      -- 50. 互动量
+    inav_rate,                    -- 51. 互动率
+    clk_inav_pv,                  -- 52. 互动点击量
+    clk_jump_pv,                  -- 53. 跳转点击量
+    clk_jump_rate,                -- 54. 跳转点击率
+    act_uv,                       -- 55. 行动访客数
+    enterslr_pv,                  -- 56. 进店量
+    enterslr_rate,                -- 57. 进店率
+    enterslr_uv,                  -- 58. 进店访客数
+    search_pv,                    -- 59. 搜索访客量
+    search_uv,                    -- 60. 搜索访客数
+    research_impress_cnt,         -- 61. 回搜展现量
+    research_clk_pv,              -- 62. 回搜点击量
+    research_clk_uv,              -- 63. 回搜点击访客数
+    research_touch_uv,            -- 64. 回搜触达访客数
+    clk_module_cnt,               -- 65. 组件点击数
+    ww_cslt_vlm,                  -- 66. 旺旺咨询量
+    live_pv,                      -- 67. 直播观看量
+    live_like_pv,                 -- 68. 直播点赞量
+    live_share_pv,                -- 69. 直播分享量
+    live_cmt_cnt,                 -- 70. 直播评论量
+    gd2live_total_vst_pv,         -- 71. 引流直播间总观看次数
+    vdo2live_trans_ratio,         -- 72. 视频引流直播观看占比
+    gd_vst_pv,                    -- 73. 引导平台访问pv
+    gd_vst_uv,                    -- 74. 引导平台访问uv
+    gd_vst_rate,                  -- 75. 引导平台访问率
+    gd_ptnler_vst_uv,             -- 76. 平台访问潜客数
+    gd_ptnler_vst_rate,           -- 77. 平台访问潜客占比
+    natural_flow_trans_exp,       -- 78. 自然流量增量曝光
+    all_cart_itm_cnt,             -- 79. 总加购数(京东all_cart_cnt合入)
+    dir_cart_itm_cnt,             -- 80. 直接加购数(京东dir_cart_cnt合入)
+    indir_cart_itm_cnt,           -- 81. 间接加购数(京东indir_cart_cnt合入)
+    cart_itm_cnt,                 -- 82. 宝贝/商品加购数
+    cart_itm_uv,                  -- 83. 宝贝加购访客数
+    cart_rate,                    -- 84. 加购率
+    all_clt_itm_cnt,              -- 85. 总收藏/关注数
+    dir_clt_itm_cnt,              -- 86. 直接收藏宝贝数
+    indir_clt_itm_cnt,            -- 87. 间接收藏宝贝数
+    clt_itm_cnt,                  -- 88. 宝贝收藏数(京东flw_itm_cnt合入)
+    clt_slr_cnt,                  -- 89. 店铺收藏数(京东flw_slr_cnt合入)
+    clt_itm_uv,                   -- 90. 宝贝收藏访客数
+    clt_slr_uv,                   -- 91. 店铺收藏访客数
+    flr_uv,                       -- 92. 关注访客数(天猫)
+    flw_uv,                       -- 93. 粉丝关注量(天猫)
+    clt_itm_rate,                 -- 94. 宝贝收藏率
+    all_clt_cart_itm_cnt,         -- 95. 总收藏加购数
+    clt_cart_itm_cnt,             -- 96. 宝贝收藏加购数
+    clt_cart_itm_rate,            -- 97. 宝贝收藏加购率
+    trans_rate,                   -- 98. 转化率
+    clk_trans_rate,               -- 99. 点击转化率
+    pay_trans_rate,               -- 100. 成交转化率
+    se2enterslr_trans_rate,       -- 101. 搜索进店率
+    enterslr2act_trans_rate,      -- 102. 进店行动率
+    act2pay_trans_rate,           -- 103. 行动成交率
+    trans_effect,                 -- 104. 转化效果
+    crt_ord_cnt,                  -- 105. 拍下订单笔数
+    all_pay_ord_cnt,              -- 106. 总支付订单/总订单行
+    dir_pay_ord_cnt,              -- 107. 直接支付订单笔数/行
+    indir_pay_ord_cnt,            -- 108. 间接支付订单笔数/行
+    all_pre_ord_cnt,              -- 109. 总预售成交笔数(京东pre_pay_ord_cnt合入)
+    dir_pre_ord_cnt,              -- 110. 直接预售成交笔数
+    indir_pre_ord_cnt,            -- 111. 间接预售成交笔数
+    ord_plc_amt,                  -- 112. 拍下订单金额
+    all_pay_ord_amt,              -- 113. 总支付/下单金额
+    dir_pay_ord_amt,              -- 114. 直接支付金额
+    indir_pay_ord_amt,            -- 115. 间接支付金额
+    all_pre_ord_amt,              -- 116. 总预售订单金额(京东pre_pay_ord_amt合入)
+    dir_pre_ord_amt,              -- 117. 直接预售订单金额
+    indir_pre_ord_amt,            -- 118. 间接预售订单金额
+    natural_flow_trans_pay,       -- 119. 自然流量增量成交
+    avg_pay_ord_cnt,              -- 120. 人均成交笔数
+    avg_pay_ord_amt,              -- 121. 人均成交金额
+    pay_byr_cnt,                  -- 122. 成交人数/买家数
+    rc_gwj_cnt,                   -- 123. 购物金充值笔数
+    rc_gwj_amt,                   -- 124. 购物金充值金额
+    coupon_rdmpt_cnt,             -- 125. 优惠券领取量
+    pay_new_user_cnt,             -- 126. 新用户支付笔数(京东pay_newer_cnt合入)
+    pay_new_user_rate,            -- 127. 新用户支付转化率
+    touch_newer_cnt,              -- 128. 新客触达数
+    vst_newer_pv,                 -- 129. 新客观看次数
+    newer_cover_rate,             -- 130. 新客覆盖率
+    newer_pay_trans_rate,         -- 131. 新客成交转化率
+    enterslr_newer_uv,            -- 132. 进店新客人数
+    inav_newer_uv,                -- 133. 互动新客人数
+    ntl_trf_exp,                  -- 134. 新流量曝光
+    ntl_trf_cvr_amt,              -- 135. 新流量转化金额
+    dir_pay_ord_amt_ratio,        -- 136. 新客直接引导成交金额占比
+    dir_pre_ord_amt_ratio,        -- 137. 新客直接引导预售成交金额占比
+    mbr_cnt,                      -- 138. 会员数
+    mbr_rate,                     -- 139. 会员转化率
+    mbr_uv,                       -- 140. 入会量
+    mbr_first_purchase_cnt,       -- 141. 会员首购人数
+    mbr_pay_ord_cnt,              -- 142. 会员成交笔数
+    mbr_pay_ord_amt,              -- 143. 会员成交金额
+    zc_crowd_retarget_gd_pay_amt, -- 144. 种草人群追投引导成交金额
+    cost,                         -- 145. 花费/消耗
+    roi,                          -- 146. 投入产出比
+    dir_pay_ord_roi,              -- 147. 直接支付roi
+    newer_roi,                    -- 148. 新客投入产出比
+    return_rate,                  -- 149. 回报率
+    zc_pay_roi,                   -- 150. 种草引导成交ROI
+    zc_crowd_retarget_roi,        -- 151. 种草人群追投roi
+    impress_cpm,                  -- 152. 千次展现花费/成本
+    cost_per_tosd_impres,         -- 153. 每次展示成本
+    avg_clk_cost,                 -- 154. 平均点击花费/成本
+    avg_cost_per_clk,             -- 155. 平均点击成本(天猫专用)
+    clk_unit_amt,                 -- 156. 点击单价
+    jump2clk_unit_amt,            -- 157. 跳转点击单价
+    vst_cost,                     -- 158. 观看成本
+    valid_vst_cpm,                -- 159. 千次有效观看成本
+    itm_fvt_cost,                 -- 160. 商品收藏成本
+    clt_itm_cost,                 -- 161. 宝贝收藏成本
+    clt_slr_cost,                 -- 162. 店铺收藏成本
+    cart_itm_cost,                -- 163. 加购商品成本
+    clt_cart_itm_cost,            -- 164. 宝贝收藏加购成本
+    all_clt_cart_itm_cost,        -- 165. 总收藏加购成本
+    shop_clt_cost,                -- 166. 店铺客户成本
+    all_pay_ord_cost,             -- 167. 总成交成本(京东cpa合入)
+    laxin_cost,                   -- 168. 拉新成本
+    inc_fans_cost,                -- 169. 新增粉丝成本
+    touch_newer_cost,             -- 170. 新客触达成本
+    zc_pay_ord_cost,              -- 171. 种草引导成交成本
+    zc_crowd_retarget_cost,       -- 172. 种草人群追投消耗
+    uuid,                         -- 173. 唯一ID/行标识(京东ly_uuid对齐至此)
+    file_id,                      -- 174. 来源文件ID/系统唯一标识
+    file_name                     -- 175. 来源文件名
+FROM ${spark.var.catalog.dwd}.ddm.dwd_tm_pfm_sku;

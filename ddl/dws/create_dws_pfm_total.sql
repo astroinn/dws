@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total;
 CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
 (
     -- =====================================================================
-    -- 1. 系统溯源与底层标识域 (System & Lineage)
+    -- 1. 
     -- =====================================================================
     data_source            STRING       COMMENT '数据来源渠道标识(如: tmall, jd)',
     date_id                 STRING       COMMENT '业务日期',
@@ -272,8 +272,8 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     clt_cart_itm_cost       STRING       COMMENT '宝贝收藏加购成本',
     all_clt_cart_itm_cost   STRING       COMMENT '总收藏加购成本',
     shop_clt_cost           STRING       COMMENT '店铺客户成本',
-    
-    all_pay_ord_cost        STRING       COMMENT '总成交成本(京东cpa合入)',
+    cpa                     string      comment '平均订单成本',
+    all_pay_ord_cost        STRING       COMMENT '总成交成本',
     laxin_cost              STRING       COMMENT '拉新成本',
     inc_fans_cost           STRING       COMMENT '新增粉丝成本',
     touch_newer_cost        STRING       COMMENT '新客触达成本',
@@ -315,9 +315,6 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     clk_date                STRING       COMMENT '点击日期(京东)',
     clk_time                STRING       COMMENT '点击时间(京东)',
 
-    -- =====================================================================
-    -- 9. 核心分区字段 (Partition)
-    -- =====================================================================
     uuid                    STRING       COMMENT '唯一ID/行标识(京东ly_uuid对齐至此)',
     file_id                 STRING       COMMENT '来源文件ID/系统唯一标识',
     file_name               STRING       COMMENT '来源文件名'

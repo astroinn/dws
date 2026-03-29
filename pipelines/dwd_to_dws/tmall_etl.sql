@@ -184,7 +184,7 @@ INSERT INTO ${spark.var.catalog.dws}.ddm.dws_pfm_total
 )
 SELECT 
     '天猫' AS data_source,       -- 01. 数据来源渠道标识(如: tmall, jd)
-    date_format(stat_date) as date_id,                      -- 02. 业务日期
+    to_date(stat_date, 'yyyyMMdd'),                      -- 02. 业务日期
     channel,                      -- 03. 原表一级触点/数据来源渠道
     platform_id,                  -- 04. 平台ID/渠道平台id
     platform_name,                -- 05. 平台名称

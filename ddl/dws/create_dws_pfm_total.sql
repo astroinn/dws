@@ -6,11 +6,10 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     -- 1. 系统溯源与底层标识域 (System & Lineage)
     -- =====================================================================
     data_source            STRING       COMMENT '数据来源渠道标识(如: tmall, jd)',
+    date_id                 STRING       COMMENT '业务日期',
     channel                 STRING       COMMENT '原表一级触点/数据来源渠道',
     mapping_channel         STRING       COMMENT 'Mapping表触点|二级触点(京东特有)',
-    uuid                    STRING       COMMENT '唯一ID/行标识(京东ly_uuid对齐至此)',
-    file_id                 STRING       COMMENT '来源文件ID/系统唯一标识',
-    file_name               STRING       COMMENT '来源文件名',
+
     
     -- =====================================================================
     -- 2. 核心维度域：组织、架构与商品 (Dimensions)
@@ -20,7 +19,6 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     platform_name           STRING       COMMENT '平台名称',
     ea_id                   STRING       COMMENT '企业账户ID',
     ea_name                 STRING       COMMENT '企业账户名称',
-    bu                      STRING       COMMENT 'BU',
     shop_id                 STRING       COMMENT '店铺ID',
     shop_name               STRING       COMMENT '店铺名称',
     account_id              STRING       COMMENT '账户id(京东)',
@@ -33,8 +31,6 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     channel_name            STRING       COMMENT '一级渠道名称',
     plan_id                 STRING       COMMENT '计划ID',
     plan_name               STRING       COMMENT '计划名称',
-    unit_id                 STRING       COMMENT '单元id(京东)',
-    unit_name               STRING       COMMENT '单元名称(京东)',
     scene_id                STRING       COMMENT '场景ID(天猫)',
     scene_name              STRING       COMMENT '场景名称(天猫)',
     scene_id_oldlv2         STRING       COMMENT '历史二级场景ID(天猫)',
@@ -61,6 +57,7 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     main_id                 STRING       COMMENT '主体ID|词包ID(天猫)',
     main_name               STRING       COMMENT '主体名称|词包名称(天猫)',
     main_type               STRING       COMMENT '主体类型|商品类型(天猫)',
+    bu                      STRING       COMMENT 'BU',    
     category                STRING       COMMENT '品类',
     old_category            STRING       COMMENT '旧品类(京东)',
     brand                   STRING       COMMENT '品牌',
@@ -341,12 +338,13 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     -- 补充系统时间域
     clk_date                STRING       COMMENT '点击日期(京东)',
     clk_time                STRING       COMMENT '点击时间(京东)',
-    default_date            STRING       COMMENT '日期(京东)',
 
     -- =====================================================================
     -- 9. 核心分区字段 (Partition)
     -- =====================================================================
-    date_id                 STRING       COMMENT '业务日期'
+    uuid                    STRING       COMMENT '唯一ID/行标识(京东ly_uuid对齐至此)',
+    file_id                 STRING       COMMENT '来源文件ID/系统唯一标识',
+    file_name               STRING       COMMENT '来源文件名'
 )
 
 

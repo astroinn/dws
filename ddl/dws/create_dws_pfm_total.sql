@@ -1,204 +1,324 @@
--- =====================================================================
--- dwd层表：京东推广sku明细表
--- 表名：dwd_jd_pfm_sku
--- 数据来源：整合7张ods表 + 维度表关联
--- 分区字段：data_source
--- =====================================================================
+DROP TABLE IF EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total;
 
-drop table if exists ${spark.var.catalog.dwd}.ddm.dwd_jd_pfm_sku;
-
-create table if not exists ${spark.var.catalog.dwd}.ddm.dwd_jd_pfm_sku
+CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
 (
-    -- ======================== 基础维度字段 ========================
-    channel                 string      comment '一级触点',
-    mapping_channel         string      comment 'Mapping表触点|二级触点',
-    date_id                 string      comment '业务日期',
-    shop_id                 string      comment '系统店铺id',
-    shop_name               string      comment '系统店铺名称',
-    plan_id                 string      comment '计划id',
-    plan_name               string      comment '推广计划名称',
-    unit_id                 string      comment '单元id',
-    unit_name               string      comment '单元名称',
-    creative_id             string      comment '创意id',
-    creative_name           string      comment '推广创意名称',
-    creative_title          string      comment '创意标题',
-    pin_code                string      comment '授权pin',
-    account_id              string      comment '账户id',
-    account_name            string      comment '账户名称',
-    oss_key                 string      comment '投放账户id',
+    -- =====================================================================
+    -- 1. 系统溯源与底层标识域 (System & Lineage)
+    -- =====================================================================
+    data_source            STRING       COMMENT '数据来源渠道标识(如: tmall, jd)',
+    date_id                 STRING       COMMENT '业务日期',
+    channel                 STRING       COMMENT '原表一级触点/数据来源渠道',
+    mapping_channel         STRING       COMMENT 'Mapping表触点|二级触点(京东特有)',
 
-    -- ======================== 基础流量指标字段 ========================
-    impress_cnt             string      comment '展现数',
-    clk_cnt                 string      comment '点击数',
-    clk_rate                string      comment '点击率',
-    cost                    string      comment '花费',
-    impress_cpm             string      comment '千次展现成本',
-    avg_clk_cost            string      comment '平均点击成本',
+    -- =====================================================================
+    -- 2. 核心维度域：组织、架构与商品 (Dimensions)
+    -- =====================================================================
+    platform_id             STRING       COMMENT '平台ID/渠道平台id',
+    platform_name           STRING       COMMENT '平台名称',
+    ea_id                   STRING       COMMENT '企业账户ID',
+    ea_name                 STRING       COMMENT '企业账户名称',
+    shop_id                 STRING       COMMENT '店铺ID',
+    shop_name               STRING       COMMENT '店铺名称',
+    account_id              STRING       COMMENT '账户id(京东)',
+    account_name            STRING       COMMENT '账户名称(京东)',
+    oss_key                 STRING       COMMENT '投放账户id(京东)',
+    pin_code                STRING       COMMENT '授权pin(京东)',
+    
+    channel_id              STRING       COMMENT '一级渠道ID',
+    channel_name            STRING       COMMENT '一级渠道名称',
+    plan_id                 STRING       COMMENT '计划ID',
+    plan_name               STRING       COMMENT '计划名称',
+    scene_id                STRING       COMMENT '场景ID(天猫)',
+    scene_name              STRING       COMMENT '场景名称(天猫)',
+    scene_id_oldlv2         STRING       COMMENT '历史二级场景ID(天猫)',
+    scene_name_oldlv2       STRING       COMMENT '历史二级场景名称(天猫)',
+    dim_name                STRING       COMMENT '维度名称',
+    
+    creative_id             STRING       COMMENT '创意ID',
+    creative_name           STRING       COMMENT '创意名称',
+    creative_title          STRING       COMMENT '创意标题(京东)',
+    material_id             STRING       COMMENT '素材id(京东)',
+    material_name           STRING       COMMENT '素材名称(京东)',
+    creative_size           STRING       COMMENT '创意尺寸(京东)',
+    creative_width          STRING       COMMENT '创意宽度(京东)',
+    creative_height         STRING       COMMENT '创意高度(京东)',
+    img_url                 STRING       COMMENT '图片url',
+    img_flag                STRING       COMMENT '图片标识',
+    video_url               STRING       COMMENT '视频url',
+    land_page_url           STRING       COMMENT '落地页地址',
+    material_creative_type  STRING       COMMENT '素材创意类型',
+    ad_creative_type        STRING       COMMENT 'ad创意类型',
+    
+    main_id                 STRING       COMMENT '主体ID|词包ID(天猫)',
+    main_name               STRING       COMMENT '主体名称|词包名称(天猫)',
+    main_type               STRING       COMMENT '主体类型|商品类型(天猫)',
+    bu                      STRING       COMMENT 'BU',    
+    category                STRING       COMMENT '品类',
+    old_category            STRING       COMMENT '旧品类(京东)',
+    brand                   STRING       COMMENT '品牌',
+    product_line            STRING       COMMENT '产品线/系列',
+    sku_id                  STRING       COMMENT 'SKU ID',
+    old_sku_id              STRING       COMMENT '旧商品id(京东)',
+    sku_name                STRING       COMMENT 'SKU名称(京东sku_name对齐天猫sku)',
+    sku_type                STRING       COMMENT 'sku类型(京东)',
+    is_npd                  STRING       COMMENT '是否新品',
+    itm_dim                 STRING       COMMENT '商品维度(京东)',
+    
+    crowd_name              STRING       COMMENT '人群名称(天猫)',
+    attribution_model       STRING       COMMENT '归因模型(天猫)',
+    unify_type              STRING       COMMENT '归因口径(天猫)',
+    dir_type                STRING       COMMENT '定向方式(京东)',
+    promote_device          STRING       COMMENT '推广设备类型(京东)',
+    fee_type                STRING       COMMENT '费用类型(京东)',
+    trans_cycle             STRING       COMMENT '转化周期',
+    crt_or_pay              STRING       COMMENT '下单订单/成交订单(京东)',
+    in_no_zp                STRING       COMMENT '含赠品/不含赠品(京东)',
+    day_report              STRING       COMMENT '分日报告(京东)',
+    clk_or_crt              STRING       COMMENT '点击/下单口径(京东)',
+    push_type               STRING       COMMENT '投放类型(京东)',
 
-    -- ======================== 订单相关指标字段 ========================
-    dir_pay_ord_cnt         string      comment '直接订单行',
-    dir_pay_ord_amt         string      comment '直接订单金额',
-    indir_pay_ord_cnt       string      comment '间接订单行',
-    indir_pay_ord_amt       string      comment '间接订单金额',
-    all_pay_ord_cnt         string      comment '总订单行',
-    all_pay_ord_amt         string      comment '总订单金额',
-    pre_pay_ord_cnt         string      comment '预售订单行',
-    pre_pay_ord_amt         string      comment '预售订单金额',
-    new_orders              string      comment '新客订单行',
-    new_order_value         string      comment '新客订单金额',
+    -- =====================================================================
+    -- 3. 过程流量与互动指标 (Traffic & Interaction)
+    -- =====================================================================
+    impression_cnt          STRING       COMMENT '展现量(京东impress_cnt合入)',
+    click_cnt               STRING       COMMENT '点击量(京东clk_cnt合入)',
+    click_rate              STRING       COMMENT '点击率(京东clk_rate合入)',
+    avg_display_rank        STRING       COMMENT '平均展现排名(天猫)',
+    clk_uv                  STRING       COMMENT '点击访客数',
+    touch_uv                STRING       COMMENT '触达访客数',
 
-    -- ======================== 加购相关指标字段 ========================
-    dir_cart_cnt            string      comment '直接加购数',
-    indir_cart_cnt          string      comment '间接加购数',
-    all_cart_cnt            string      comment '总加购数',
-    cart_rate               string      comment '加购率',
-    cart_cost               string      comment '加购成本',
-    cart_itm_cost           string      comment '加购商品成本',
+    vst_itm_cnt             STRING       COMMENT '宝贝浏览数 #67',
+    vst_slr_cnt             STRING       COMMENT '店铺浏览数 #68',
+    vst_itm_uv              STRING       COMMENT '宝贝浏览访客数 #69',
+    vst_pv                  STRING       COMMENT '观看次数/访问页面数(京东stay_page_cnt合入)',
+    vst_uv                  STRING       COMMENT '访客数(京东ad2vst_cnt合入)',
+    vst_rate                STRING       COMMENT '观看率',
+    avg_vst_interval        STRING       COMMENT '平均观看时长(京东avg_stay_time_len合入)',
+    avg_vst_page_cnt        STRING       COMMENT '平均访问页面数',
+    depth_vst_pv            STRING       COMMENT '深度访问量',
+    deepth_enterslr_cnt     STRING       COMMENT '深度进店数(京东)',
+    stay_time_len           STRING       COMMENT '访问时长总计(天猫)',
+    valid_vst_pv            STRING       COMMENT '有效观看量',
+    valid_vst_rate          STRING       COMMENT '有效观看率',
+    avg_valid_vst_interval  STRING       COMMENT '平均有效观看时长',
+    
+    cmt_pv                  STRING       COMMENT '评论量',
+    like_pv                 STRING       COMMENT '点赞量',
+    share_pv                STRING       COMMENT '转发量',
+    inav_pv                 STRING       COMMENT '互动量',
+    inav_rate               STRING       COMMENT '互动率',
+    clk_inav_pv             STRING       COMMENT '互动点击量',
+    clk_jump_pv             STRING       COMMENT '跳转点击量',
+    clk_jump_rate           STRING       COMMENT '跳转点击率',
+    act_uv                  STRING       COMMENT '行动访客数',
+    enterslr_pv             STRING       COMMENT '进店量',
+    enterslr_rate           STRING       COMMENT '进店率',
+    enterslr_uv             STRING       COMMENT '进店访客数',
+    search_pv               STRING       COMMENT '搜索访客量',
+    search_uv               STRING       COMMENT '搜索访客数',
+    research_impress_cnt    STRING       COMMENT '回搜展现量',
+    research_clk_pv         STRING       COMMENT '回搜点击量',
+    research_clk_uv         STRING       COMMENT '回搜点击访客数',
+    research_touch_uv       STRING       COMMENT '回搜触达访客数',
+    clk_module_cnt          STRING       COMMENT '组件点击数',
+    ww_cslt_vlm             STRING       COMMENT '旺旺咨询量',
+    reserve_cnt             STRING       COMMENT '预约数(京东)',
+    get_ticket_cnt          STRING       COMMENT '领券数(京东)',
+    
+    live_pv                 STRING       COMMENT '直播观看量',
+    live_like_pv            STRING       COMMENT '直播点赞量',
+    live_share_pv           STRING       COMMENT '直播分享量',
+    live_cmt_cnt            STRING       COMMENT '直播评论量',
+    gd2live_total_vst_pv    STRING       COMMENT '引流直播间总观看次数',
+    vdo2live_trans_ratio    STRING       COMMENT '视频引流直播观看占比',
+    video_views             STRING       COMMENT '视频播放次数(京东)',
+    valid_video_views       STRING       COMMENT '视频有效播放量(京东)',
+    valid_view_rate         STRING       COMMENT '视频有效播放率(京东)',
+    play_25per_vv           STRING       COMMENT '25%进度播放数(京东)',
+    play_50per_vv           STRING       COMMENT '50%进度播放数(京东)',
+    play_75per_vv           STRING       COMMENT '75%进度播放数(京东)',
+    play_100per_vv          STRING       COMMENT '100%进度播放数(京东)',
+    views_10pct             STRING       COMMENT '10%进度播放数(京东)',
+    views_95pct             STRING       COMMENT '95%进度播放数(京东)',
+    views_3s_complete       STRING       COMMENT '3s播放完成量(京东)',
+    views_5s_complete       STRING       COMMENT '5s播放完成量(京东)',
+    views_7s_complete       STRING       COMMENT '7s播放完成量(京东)',
+    completion_rate         STRING       COMMENT '视频播完率(京东)',
+    disinterest_clicks      STRING       COMMENT '不感兴趣点击次数(京东)',
 
-    -- ======================== 转化与roi指标字段 ========================
-    trans_rate              string      comment '转化率',
-    roi                     string      comment '投产比',
-    cpa                     string      comment '平均订单成本',
+    gd_vst_pv               STRING       COMMENT '引导平台访问pv',
+    gd_vst_uv               STRING       COMMENT '引导平台访问uv',
+    gd_vst_rate             STRING       COMMENT '引导平台访问率',
+    gd_ptnler_vst_uv        STRING       COMMENT '平台访问潜客数',
+    gd_ptnler_vst_rate      STRING       COMMENT '平台访问潜客占比',
+    natural_flow_trans_exp  STRING       COMMENT '自然流量增量曝光',
 
-    -- ======================== 新客相关指标字段 ========================
-    pay_newer_cnt           string      comment '下单新客数',
-    new_customers           string      comment '新客数',
-    new_customer_cost       string      comment '新客成本',
+    -- =====================================================================
+    -- 4. 转化指标域：收藏/关注与加购 (Add to Cart & Favorite)
+    -- =====================================================================
+    all_cart_itm_cnt        STRING       COMMENT '总加购数(京东all_cart_cnt合入)',
+    dir_cart_itm_cnt        STRING       COMMENT '直接加购数(京东dir_cart_cnt合入)',
+    indir_cart_itm_cnt      STRING       COMMENT '间接加购数(京东indir_cart_cnt合入)',
+    cart_itm_cnt            STRING       COMMENT '宝贝/商品加购数',
+    cart_itm_uv             STRING       COMMENT '宝贝加购访客数',
+    cart_rate               STRING       COMMENT '加购率',
+    
+    all_clt_itm_cnt         STRING       COMMENT '总收藏/关注数',
+    dir_clt_itm_cnt         STRING       COMMENT '直接收藏宝贝数',
+    indir_clt_itm_cnt       STRING       COMMENT '间接收藏宝贝数',
+    clt_itm_cnt             STRING       COMMENT '宝贝收藏数(京东flw_itm_cnt合入)',
+    clt_slr_cnt             STRING       COMMENT '店铺收藏数(京东flw_slr_cnt合入)',
+    clt_itm_uv              STRING       COMMENT '宝贝收藏访客数',
+    clt_slr_uv              STRING       COMMENT '店铺收藏访客数',
+    flr_uv                  STRING       COMMENT '关注访客数(天猫)',
+    flw_uv                  STRING       COMMENT '粉丝关注量(天猫)',
+    clt_itm_rate            STRING       COMMENT '宝贝收藏率',
+    
+    all_clt_cart_itm_cnt    STRING       COMMENT '总收藏加购数',
+    clt_cart_itm_cnt        STRING       COMMENT '宝贝收藏加购数',
+    clt_cart_itm_rate       STRING       COMMENT '宝贝收藏加购率',
 
-    -- ======================== 用户行为指标字段 ========================
-    ad2vst_cnt              string      comment '广告访客数',
-    stay_page_cnt           string      comment '访问页面数',
-    avg_stay_time_len       string      comment '页面平均访问时长',
-    deepth_enterslr_cnt     string      comment '深度进店数',
-    flw_itm_cnt             string      comment '商品关注数',
-    flw_slr_cnt             string      comment '店铺关注数',
-    reserve_cnt             string      comment '预约数',
-    get_ticket_cnt          string      comment '领券数',
-    store_follow_cost       string      comment '店铺关注成本',
-    product_follow_cost     string      comment '商品关注成本',
+    -- =====================================================================
+    -- 5. 结果指标域：订单与金额 (Orders & GMV)
+    -- =====================================================================
+    trans_rate              STRING       COMMENT '转化率',
+    clk_trans_rate          STRING       COMMENT '点击转化率',
+    pay_trans_rate          STRING       COMMENT '成交转化率',
+    se2enterslr_trans_rate  STRING       COMMENT '搜索进店率',
+    enterslr2act_trans_rate STRING       COMMENT '进店行动率',
+    act2pay_trans_rate      STRING       COMMENT '行动成交率',
+    trans_effect            STRING       COMMENT '转化效果',
+    
+    crt_ord_cnt             STRING       COMMENT '拍下订单笔数',
+    all_pay_ord_cnt         STRING       COMMENT '总支付订单/总订单行',
+    dir_pay_ord_cnt         STRING       COMMENT '直接支付订单笔数/行',
+    indir_pay_ord_cnt       STRING       COMMENT '间接支付订单笔数/行',
+    all_pre_ord_cnt         STRING       COMMENT '总预售成交笔数(京东pre_pay_ord_cnt合入)',
+    dir_pre_ord_cnt         STRING       COMMENT '直接预售成交笔数',
+    indir_pre_ord_cnt       STRING       COMMENT '间接预售成交笔数',
+    
+    ord_plc_amt             STRING       COMMENT '拍下订单金额',
+    all_pay_ord_amt         STRING       COMMENT '总支付/下单金额',
+    dir_pay_ord_amt         STRING       COMMENT '直接支付金额',
+    indir_pay_ord_amt       STRING       COMMENT '间接支付金额',
+    all_pre_ord_amt         STRING       COMMENT '总预售订单金额(京东pre_pay_ord_amt合入)',
+    dir_pre_ord_amt         STRING       COMMENT '直接预售订单金额',
+    indir_pre_ord_amt       STRING       COMMENT '间接预售订单金额',
+    natural_flow_trans_pay  STRING       COMMENT '自然流量增量成交',
+    
+    avg_pay_ord_cnt         STRING       COMMENT '人均成交笔数',
+    avg_pay_ord_amt         STRING       COMMENT '人均成交金额',
+    pay_byr_cnt             STRING       COMMENT '成交人数/买家数',
+    rc_gwj_cnt              STRING       COMMENT '购物金充值笔数',
+    rc_gwj_amt              STRING       COMMENT '购物金充值金额',
+    coupon_rdmpt_cnt        STRING       COMMENT '优惠券领取量',
 
-    -- ======================== 创意素材字段 ========================
-    material_id             string      comment '素材id',
-    material_name           string      comment '素材名称',
-    creative_size           string      comment '创意尺寸',
-    creative_width          string      comment '创意宽度',
-    creative_height         string      comment '创意高度',
-    img_url                 string      comment '图片url',
-    img_flag                string      comment '图片标识',
-    video_url               string      comment '视频url',
-    land_page_url           string      comment '落地页地址',
-    material_creative_type  string      comment '素材创意类型',
-    ad_creative_type        string      comment 'ad创意类型',
+    -- =====================================================================
+    -- 6. 客户圈层域：新客与会员 (Newer & Member)
+    -- =====================================================================
+    pay_new_user_cnt        STRING       COMMENT '新用户支付笔数(京东pay_newer_cnt合入)',
+    pay_new_user_rate       STRING       COMMENT '新用户支付转化率',
+    new_customers           STRING       COMMENT '新客数(京东)',
+    new_orders              STRING       COMMENT '新客订单行(京东)',
+    new_order_value         STRING       COMMENT '新客订单金额(京东)',
+    touch_newer_cnt         STRING       COMMENT '新客触达数',
+    vst_newer_pv            STRING       COMMENT '新客观看次数',
+    newer_cover_rate        STRING       COMMENT '新客覆盖率',
+    newer_pay_trans_rate    STRING       COMMENT '新客成交转化率',
+    enterslr_newer_uv       STRING       COMMENT '进店新客人数',
+    inav_newer_uv           STRING       COMMENT '互动新客人数',
+    ntl_trf_exp             STRING       COMMENT '新流量曝光',
+    ntl_trf_cvr_amt         STRING       COMMENT '新流量转化金额',
+    dir_pay_ord_amt_ratio   STRING       COMMENT '新客直接引导成交金额占比',
+    dir_pre_ord_amt_ratio   STRING       COMMENT '新客直接引导预售成交金额占比',
+    
+    mbr_cnt                 STRING       COMMENT '会员数',
+    mbr_rate                STRING       COMMENT '会员转化率',
+    mbr_uv                  STRING       COMMENT '入会量',
+    mbr_first_purchase_cnt  STRING       COMMENT '会员首购人数',
+    mbr_pay_ord_cnt         STRING       COMMENT '会员成交笔数',
+    mbr_pay_ord_amt         STRING       COMMENT '会员成交金额',
+    
+    zc_crowd_retarget_gd_pay_amt STRING       COMMENT '种草人群追投引导成交金额',
 
-    -- ======================== 视频播放相关指标字段 ========================
-    video_views             string      comment '视频播放次数',
-    valid_video_views       string      comment '视频有效播放量',
-    valid_view_rate         string      comment '视频有效播放率',
-    valid_view_cost         string      comment '有效播放成本',
-    play_25per_vv           string      comment '25%进度播放数',
-    play_50per_vv           string      comment '50%进度播放数',
-    play_75per_vv           string      comment '75%进度播放数',
-    play_100per_vv          string      comment '100%进度播放数',
-    views_10pct             string      comment '10%进度播放数',
-    views_95pct             string      comment '95%进度播放数',
-    views_3s_complete       string      comment '3s播放完成量',
-    views_5s_complete       string      comment '5s播放完成量',
-    views_7s_complete       string      comment '7s播放完成量',
-    completion_rate         string      comment '视频播完率',
-    disinterest_clicks      string      comment '不感兴趣点击次数',
+    -- =====================================================================
+    -- 7. 财务考核域：消耗、成本与ROI (Cost & ROI)
+    -- =====================================================================
+    cost                    STRING       COMMENT '花费/消耗',
+    roi                     STRING       COMMENT '投入产出比',
+    dir_pay_ord_roi         STRING       COMMENT '直接支付roi',
+    newer_roi               STRING       COMMENT '新客投入产出比',
+    return_rate             STRING       COMMENT '回报率',
+    zc_pay_roi              STRING       COMMENT '种草引导成交ROI',
+    zc_crowd_retarget_roi   STRING       COMMENT '种草人群追投roi',
+    
+    impress_cpm             STRING       COMMENT '千次展现花费/成本',
+    cost_per_tosd_impres    STRING       COMMENT '每次展示成本',
+    avg_clk_cost            STRING       COMMENT '平均点击花费/成本',
+    avg_cost_per_clk        STRING       COMMENT '平均点击成本(天猫专用)',
+    clk_unit_amt            STRING       COMMENT '点击单价',
+    jump2clk_unit_amt       STRING       COMMENT '跳转点击单价',
+    
+    vst_cost                STRING       COMMENT '观看成本',
+    valid_vst_cpm           STRING       COMMENT '千次有效观看成本',
+    valid_view_cost         STRING       COMMENT '有效播放成本(京东)',
+    itm_fvt_cost            STRING       COMMENT '商品收藏成本',
+    clt_itm_cost            STRING       COMMENT '宝贝收藏成本',
+    clt_slr_cost            STRING       COMMENT '店铺收藏成本',
+    store_follow_cost       STRING       COMMENT '店铺关注成本(京东)',
+    product_follow_cost     STRING       COMMENT '商品关注成本(京东)',
+    cart_itm_cost           STRING       COMMENT '加购商品成本',
+    cart_cost               STRING       COMMENT '加购成本(京东)',
+    clt_cart_itm_cost       STRING       COMMENT '宝贝收藏加购成本',
+    all_clt_cart_itm_cost   STRING       COMMENT '总收藏加购成本',
+    shop_clt_cost           STRING       COMMENT '店铺客户成本',
+    
+    all_pay_ord_cost        STRING       COMMENT '总成交成本(京东cpa合入)',
+    laxin_cost              STRING       COMMENT '拉新成本',
+    inc_fans_cost           STRING       COMMENT '新增粉丝成本',
+    touch_newer_cost        STRING       COMMENT '新客触达成本',
+    new_customer_cost       STRING       COMMENT '新客成本(京东)',
+    zc_pay_ord_cost         STRING       COMMENT '种草引导成交成本',
+    zc_crowd_retarget_cost  STRING       COMMENT '种草人群追投消耗',
+    
+    -- =====================================================================
+    -- 8. 渠道特有业务扩展域 (Exclusive Ext)
+    -- =====================================================================
+    allsite_ord_amt         STRING       COMMENT '全站交易额',
+    allsite_ord_cnt         STRING       COMMENT '全站订单行',
+    allsite_ord_cost        STRING       COMMENT '全站订单成本',
+    allsite_fee_ratio       STRING       COMMENT '全站费比',
+    allsite_roi             STRING       COMMENT '全站投产比',
+    
+    order_id                STRING       COMMENT '订单id',
+    order_name              STRING       COMMENT '订单名称',
+    schedule_id             STRING       COMMENT '排期id',
+    schedule_name           STRING       COMMENT '排期名称',
+    ad_slot_id              STRING       COMMENT '广告位id',
+    ad_slot_name            STRING       COMMENT '广告位名称',
+    exp_pv                  STRING       COMMENT '曝光数(合约)',
+    exp_clk_cnt             STRING       COMMENT '曝光点击数(合约)',
+    exp_clk_rate            STRING       COMMENT '曝光点击率(合约)',
+    
+    start_time              STRING       COMMENT '开始时间',
+    expire_time             STRING       COMMENT '到期时间',
+    plan_type               STRING       COMMENT '计划类型',
+    market_scene            STRING       COMMENT '营销场景',
+    status                  STRING       COMMENT '状态',
+    item_sku                STRING       COMMENT '商品sku(直播)',
+    resource_slot           STRING       COMMENT '资源位',
+    
+    media_type              STRING       COMMENT '媒体类型',
+    placement               STRING       COMMENT '投放位置',
+    one_click_cost          STRING       COMMENT '一键起量花费',
+    
+    clk_date                STRING       COMMENT '点击日期(京东)',
+    clk_time                STRING       COMMENT '点击时间(京东)',
 
-    -- ======================== 全站营销特有字段 ========================
-    allsite_ord_amt         string      comment '全站交易额',
-    allsite_ord_cnt         string      comment '全站订单行',
-    allsite_ord_cost        string      comment '全站订单成本',
-    allsite_fee_ratio       string      comment '全站费比',
-    allsite_roi             string      comment '全站投产比',
-    itm_dim                 string      comment '商品维度',
-
-    -- ======================== 品牌合约特有字段 ========================
-    order_id                string      comment '订单id',
-    order_name              string      comment '订单名称',
-    schedule_id             string      comment '排期id',
-    schedule_name           string      comment '排期名称',
-    ad_slot_id              string      comment '广告位id',
-    ad_slot_name            string      comment '广告位名称',
-    exp_pv                  string      comment '曝光数',
-    exp_clk_cnt             string      comment '曝光点击数',
-    exp_clk_rate            string      comment '曝光点击率',
-
-    -- ======================== 直播推广特有字段 ========================
-    start_time              string      comment '开始时间',
-    expire_time             string      comment '到期时间',
-    plan_type               string      comment '计划类型',
-    market_scene            string      comment '营销场景',
-    status                  string      comment '状态',
-    item_sku                string      comment '商品sku',
-    resource_slot           string      comment '资源位',
-
-    -- ======================== 站内广告特有字段 ========================
-    media_type              string      comment '媒体类型',
-    placement               string      comment '投放位置',
-    one_click_cost          string      comment '一键起量花费',
-
-    -- ======================== 商品与业务维度字段 ========================
-    old_category            string      comment '旧品类',
-    old_sku_id              string      comment '旧商品id',
-    sku_id                  string      comment '商品id',
-    sku_name                string      comment '商品名称',
-    bu                      string      comment 'bu',
-    category                string      comment '品类',
-    brand                   string      comment '品牌',
-    product_line            string      comment '产品线',
-    is_npd                  string      comment '是否新产品',
-    fee_type                string      comment '费用类型',
-    sku_type                string      comment 'sku类型',
-    -- ======================== 业务规则控制字段 ========================
-    trans_cycle             string      comment '转化周期',
-    crt_or_pay              string      comment '下单订单/成交订单',
-    in_no_zp                string      comment '含赠品/不含赠品',
-    day_report              string      comment '分日报告',
-    clk_or_crt              string      comment '点击/下单口径',
-    dir_type                string      comment '定向方式',
-    promote_device          string      comment '推广设备类型',
-
-    -- ======================== 系统与技术字段 ========================
-    ly_uuid                 string      comment '行标识',
-    channel_id              string      comment '1级渠道id',
-    channel_name            string      comment '1级渠道名称',
-    platform_id             string      comment '渠道平台id',
-    platform_name           string      comment '渠道平台名称',
-    ea_id                   string      comment '企业id',
-    ea_name                 string      comment '企业名称',
-    file_id                 string      comment '系统唯一标识',
-    file_name               string      comment '文件名',
-    default_date            string      comment '日期',
-    clk_date                string      comment '点击日期',
-    clk_time                string      comment '点击时间',
-    push_type               string      comment '投放类型',
-
-    -- ======================== 六资相关字段 ========================
-    liuzi_cost              string      comment '六资成本',
-    liuzi_rate              string      comment '六资转化率',
-    all_form_submit_cnt     string      comment '总表单提交量',
-
-    -- ======================== 媒体口径字段 ========================
-    total_orders_media      string      comment '总订单行_媒',
-    total_value_media       string      comment '总订单金额_媒',
-    conversion_rate_med     string      comment '转化率_媒',
-    roi_media               string      comment '投产比_媒',
-    avg_order_cost_med      string      comment '平均订单成本_媒',
-    direct_orders_media     string      comment '直接订单行_媒',
-    direct_value_media      string      comment '直接订单金额_媒',
-    total_add_to_cart       string      comment '总加购数_媒',
-    direct_add_to_cart      string      comment '直接加购数_媒',
-    add_to_cart_cost        string      comment '加购成本_媒',
-
-    -- ======================== 品牌合约成交口径字段 ========================
-    total_order_lines_cg    string      comment '总订单行_成交口径',
-    total_order_value_cg    string      comment '总订单金额_成交口径'
-)
-comment 'dwd层-京东推广sku明细表，整合全站营销、京东快车、直播推广、站内广告、品牌合约、智能投放、所有触点7张ods表数据'
-partitioned by (
-    data_source string comment '数据来源标识,一级触点',
-    data_table_source string comment '数据来源标识,ods表名'
+    -- =====================================================================
+    -- 9. 核心分区字段 (Partition)
+    -- =====================================================================
+    uuid                    STRING       COMMENT '唯一ID/行标识(京东ly_uuid对齐至此)',
+    file_id                 STRING       COMMENT '来源文件ID/系统唯一标识',
+    file_name               STRING       COMMENT '来源文件名'
 );

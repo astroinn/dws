@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     clk_time                STRING       COMMENT '点击时间(京东)',
 
     -- =====================================================================
-    -- 9. 核心分区字段 (Partition)
+    -- 9. 
     -- =====================================================================
     uuid                    STRING       COMMENT '唯一ID/行标识(京东ly_uuid对齐至此)',
     file_id                 STRING       COMMENT '来源文件ID/系统唯一标识',

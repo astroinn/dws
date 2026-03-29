@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS ${spark.var.catalog.dws}.ddm.dws_pfm_total
     date_id                 STRING       COMMENT '业务日期',
     channel                 STRING       COMMENT '原表一级触点/数据来源渠道',
     mapping_channel         STRING       COMMENT 'Mapping表触点|二级触点(京东特有)',
-
     
     -- =====================================================================
     -- 2. 核心维度域：组织、架构与商品 (Dimensions)
